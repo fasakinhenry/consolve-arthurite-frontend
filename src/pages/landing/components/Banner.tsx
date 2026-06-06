@@ -23,7 +23,7 @@ export const Banner: React.FC = () => {
           Live Demo
         </span>
         <span className="text-ink-soft">
-          UrbanPulse AI is live for the Lagos Mobility Hackathon · Connecting commuters, operators, and planners.
+          UrbanPulse AI is live for the Arthurite Mobility Hackathon · Connecting commuters, operators, and planners.
         </span>
         <a
           href="#dashboard-preview"
