@@ -1,0 +1,16 @@
+{
+  "short_name": "Urbanpulse",
+  "name": "Urbanpulse — Mobility Intelligence Platform",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#ffffff",
+  "theme_color": "#0c513f",
+  "display": "standalone",
+  "orientation": "portrait"
+}
