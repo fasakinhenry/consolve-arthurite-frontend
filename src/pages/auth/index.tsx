@@ -168,40 +168,31 @@ const AuthPage: React.FC<AuthPageProps> = ({ mode: initialMode = 'login' }) => {
             </p>
           </div>
 
-          {/* Role selector — only on register */}
-          <AnimatePresence>
-            {mode === 'register' && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                className="mb-6"
-              >
-                <label className="block text-[12px] font-bold text-ink-muted uppercase tracking-wider mb-3">
-                  I am a...
-                </label>
-                <div className="grid grid-cols-2 gap-2">
-                  {ROLES.map((r) => (
-                    <button
-                      key={r.key}
-                      type="button"
-                      onClick={() => setRole(r.key)}
-                      className={`flex items-center gap-2.5 p-3 rounded-xl border-2 text-left transition-default cursor-pointer
-                        ${role === r.key
-                          ? 'border-primary bg-primary-light text-primary'
-                          : 'border-hairline bg-white text-ink-soft hover:border-primary-muted'}`}
-                    >
-                      <span className="text-[20px]">{r.icon}</span>
-                      <div>
-                        <p className="text-[13px] font-bold leading-tight">{r.label}</p>
-                        <p className="text-[11px] opacity-70">{r.desc}</p>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {/* Role selector */}
+          <div className="mb-6">
+            <label className="block text-[12px] font-bold text-ink-muted uppercase tracking-wider mb-3">
+              {mode === 'login' ? 'Sign in as a...' : 'I am a...'}
+            </label>
+            <div className="grid grid-cols-2 gap-2">
+              {ROLES.map((r) => (
+                <button
+                  key={r.key}
+                  type="button"
+                  onClick={() => setRole(r.key)}
+                  className={`flex items-center gap-2.5 p-3 rounded-xl border-2 text-left transition-default cursor-pointer
+                    ${role === r.key
+                      ? 'border-primary bg-primary-light text-primary'
+                      : 'border-hairline bg-white text-ink-soft hover:border-primary-muted'}`}
+                >
+                  <span className="text-[20px]">{r.icon}</span>
+                  <div>
+                    <p className="text-[13px] font-bold leading-tight">{r.label}</p>
+                    <p className="text-[11px] opacity-70">{r.desc}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
 
           {/* Google sign-in */}
           <button
