@@ -2,54 +2,63 @@
 @import "tailwindcss";
 
 @theme {
+  /* ─── Brand Greens ───────────────────────────────────────── */
   --color-primary: #0c513f;
   --color-primary-bright: #0e604b;
   --color-primary-deep: #0a4233;
+  --color-primary-light: #e6f4ef;
+  --color-primary-muted: #a7dbc8;
   --color-on-primary: #ffffff;
-  --color-ink: #000000;
-  --color-ink-soft: #05261c;
+
+  /* ─── Ink & Text ─────────────────────────────────────────── */
+  --color-ink: #111827;
+  --color-ink-soft: #374151;
+  --color-ink-muted: #6b7280;
   --color-on-ink: #ffffff;
+
+  /* ─── Surfaces ───────────────────────────────────────────── */
   --color-canvas: #ffffff;
-  --color-paper: #f3f4f6;
-  --color-cloud: #f2fcf9;
+  --color-paper: #f9fafb;
+  --color-cloud: #f0fdf6;
+  --color-section: #f3f4f6;
+
+  /* ─── Borders ────────────────────────────────────────────── */
   --color-hairline: #e5e7eb;
   --color-hairline-strong: #d1d5db;
-  --color-link: #ffc501;
-  --color-link-pressed: #f5b400;
-  --color-success: #02c27f;
-  --color-warning: #ffc501;
-  --color-error: #dc0000;
-  --color-accent-yellow: #ffc501;
-  --color-accent-blue: #99c8ff;
-  --color-accent-peach: #ffdbc9;
-  --color-accent-orange: #ff884d;
-  --color-hero-bg: #ffedb3;
-  --color-footer-bg: #000000;
 
+  /* ─── Accent — NO ORANGE ─────────────────────────────────── */
+  --color-accent-green: #16a34a;
+  --color-accent-teal: #0d9488;
+  --color-accent-lime: #84cc16;
+
+  /* ─── Semantic ───────────────────────────────────────────── */
+  --color-success: #16a34a;
+  --color-warning: #ca8a04;
+  --color-error: #dc2626;
+  --color-info: #2563eb;
+
+  /* ─── Footer ─────────────────────────────────────────────── */
+  --color-footer-bg: #0a0f0d;
+
+  /* ─── Typography ─────────────────────────────────────────── */
   --font-display: "Plus Jakarta Sans", sans-serif;
   --font-body: "Plus Jakarta Sans", sans-serif;
 
+  /* ─── Radii ──────────────────────────────────────────────── */
   --radius-none: 0px;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-2xl: 28px;
   --radius-pill: 9999px;
 
-  --spacing-xxs: 4px;
-  --spacing-xs: 8px;
-  --spacing-sm: 12px;
-  --spacing-md: 16px;
-  --spacing-lg: 24px;
-  --spacing-xl: 32px;
-  --spacing-xxl: 40px;
-  --spacing-xxxl: 56px;
-  --spacing-section: 80px;
 
-  --animate-marquee: marquee 30s linear infinite;
-  --animate-pulse-slow: pulse-slow 3s ease-in-out infinite;
+  /* ─── Animations ─────────────────────────────────────────── */
+  --animate-marquee: marquee 32s linear infinite;
+  --animate-fade-up: fade-up 0.4s ease forwards;
 
-  /* Reset all shadow types to none for the flat aesthetic */
+  /* ─── Shadows — flat design ──────────────────────────────── */
   --shadow-none: none;
   --shadow-sm: none;
   --shadow-md: none;
@@ -59,17 +68,18 @@
   --shadow-inner: none;
 }
 
+/* ─── Keyframes ─────────────────────────────────────────────── */
 @keyframes marquee {
   0% { transform: translateX(0%); }
   100% { transform: translateX(-50%); }
 }
 
-@keyframes pulse-slow {
-  0%, 100% { opacity: 0.8; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.05); }
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Custom Base Styles */
+/* ─── Base ───────────────────────────────────────────────────── */
 html, body {
   background-color: var(--color-canvas);
   color: var(--color-ink);
@@ -78,105 +88,105 @@ html, body {
   padding: 0;
   overflow-x: hidden;
   box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
 }
 
 *, *:before, *:after {
   box-sizing: inherit;
-  /* Disable shadows globally */
   box-shadow: none !important;
 }
 
-/* Utility Custom Typography Classes matching the design system */
+/* ─── Typography Scale ───────────────────────────────────────── */
 .text-display-xxl {
   font-family: var(--font-display);
-  font-size: 112px;
+  font-size: clamp(56px, 8vw, 96px);
   font-weight: 800;
-  line-height: 1.1;
+  line-height: 1.05;
   letter-spacing: -0.04em;
 }
 
 .text-display-xl {
   font-family: var(--font-display);
-  font-size: 72px;
+  font-size: clamp(40px, 6vw, 72px);
   font-weight: 800;
-  line-height: 1.1;
+  line-height: 1.08;
   letter-spacing: -0.03em;
 }
 
 .text-display-lg {
   font-family: var(--font-display);
-  font-size: 64px;
+  font-size: clamp(32px, 4vw, 56px);
   font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
 }
 
 .text-display-md {
   font-family: var(--font-display);
-  font-size: 48px;
+  font-size: clamp(28px, 3.5vw, 44px);
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
 }
 
 .text-display-sm {
   font-family: var(--font-display);
-  font-size: 32px;
+  font-size: clamp(22px, 2.5vw, 30px);
   font-weight: 700;
-  line-height: 1.3;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
 }
 
 .text-body-lg {
   font-family: var(--font-body);
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 400;
-  line-height: 1.4;
+  line-height: 1.6;
 }
 
 .text-body-md {
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 400;
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
 .text-body-emphasis {
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
 .text-caption-md {
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 400;
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 .text-button-md {
   font-family: var(--font-display);
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 1.5;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.01em;
 }
 
-.text-link-md {
-  font-family: var(--font-body);
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 1.4;
-}
-
-/* Custom interactive transition helper */
+/* ─── Transition Helper ──────────────────────────────────────── */
 .transition-default {
-  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 160ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Custom Hide Scrollbar classes */
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
+/* ─── Scrollbar Hide ─────────────────────────────────────────── */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ─── Chowdeck-style card hover ──────────────────────────────── */
+.card-hover {
+  transition: border-color 160ms ease, transform 160ms ease;
 }
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+.card-hover:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-3px);
 }
