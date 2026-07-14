@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { MapPin, Search, Navigation, Compass, History, LogOut } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { MapPin, Search, Navigation, Compass, History } from 'lucide-react'
+import DashboardHeader from '../../components/layout/DashboardHeader'
 
 interface RouteResult {
   from: string
@@ -57,34 +58,7 @@ const RiderDashboard: React.FC = () => {
   return (
     <div className="min-h-screen bg-section flex flex-col font-body">
       {/* Top Header */}
-      <header className="w-full bg-white border-b border-hairline py-4 px-6 md:px-12 sticky top-0 z-40 flex items-center justify-between">
-        <Link to="/" className="flex items-center space-x-2">
-          <div className="bg-primary text-white p-2 rounded-xl">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M2 17L12 22L22 17" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M2 12L12 17L22 12" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
-          <span className="font-display font-extrabold text-[18px] text-ink">
-            Urban<span className="text-primary">pulse</span>
-          </span>
-        </Link>
-
-        <div className="flex items-center space-x-4">
-          <div className="bg-primary-light text-primary text-[12px] font-bold px-3 py-1.5 rounded-pill border border-primary-muted flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            Rider Account
-          </div>
-          <button
-            onClick={handleLogout}
-            className="p-2 rounded-xl bg-paper hover:bg-hairline text-ink-soft hover:text-ink transition-default border border-hairline cursor-pointer"
-            title="Logout"
-          >
-            <LogOut className="w-4 h-4" />
-          </button>
-        </div>
-      </header>
+      <DashboardHeader role="rider" onLogout={handleLogout} />
 
       {/* Main Grid */}
       <main className="max-w-7xl w-full mx-auto p-6 md:p-8 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start text-left">

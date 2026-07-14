@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import {
   Map,
   BarChart3,
-  Database,
-  TrendingUp,
   RefreshCw,
-  Shield,
   Download,
   Play,
   Sparkles,
-  ChevronRight,
-  LogOut
+  TrendingUp
 } from 'lucide-react'
+import DashboardHeader from '../../components/layout/DashboardHeader'
+import MetricCard from '../../components/dashboard/MetricCard'
+import AIInsightCard from '../../components/dashboard/AIInsightCard'
+import type { AIInsight } from '../../components/dashboard/AIInsightCard'
 
 // Configuration
-const API_BASE = 'http://localhost:5000/api/v1'
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api/v1'
 
 interface DashboardStats {
   totalTrips: number
@@ -34,15 +34,6 @@ interface RouteAnalytics {
   growth: number
   index: number
   type: string
-}
-
-interface AIInsight {
-  id?: string
-  category: 'planning' | 'investment' | 'operational'
-  corridor: string
-  recommendation: string
-  urgency: 'high' | 'medium' | 'low'
-  impact: string
 }
 
 const IntelligenceDashboard: React.FC = () => {
@@ -234,45 +225,11 @@ const IntelligenceDashboard: React.FC = () => {
     <div className="min-h-screen bg-section flex flex-col font-body select-none">
       
       {/* Navigation Header */}
-      <header className="w-full bg-white border-b border-hairline py-4 px-6 md:px-12 sticky top-0 z-50 flex items-center justify-between">
-        <Link to="/" className="flex items-center space-x-2.5">
-          <div className="bg-primary text-white p-2 rounded-xl">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M2 17L12 22L22 17" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M2 12L12 17L22 12" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
-          <span className="font-display font-extrabold text-[19px] text-ink">
-            Urban<span className="text-primary">pulse</span>
-          </span>
-        </Link>
-
-        {/* Sync/Status Badges */}
-        <div className="flex items-center space-x-4">
-          <div className={`text-[12px] font-bold px-3.5 py-1.5 rounded-pill border flex items-center gap-1.5 transition-default
-            ${syncStatus === 'connected' 
-              ? 'bg-primary-light text-primary border-primary-muted' 
-              : 'bg-paper text-ink-muted border-hairline'}`}
-          >
-            <Database className="w-3.5 h-3.5" />
-            {syncStatus === 'connected' ? 'AWS Live Sync' : 'Simulated Sandbox'}
-          </div>
-
-          <div className="bg-primary text-white text-[12px] font-bold px-3 py-1.5 rounded-pill border border-primary-deep flex items-center gap-1">
-            <Shield className="w-3.5 h-3.5" />
-            Bloomberg Terminal Node
-          </div>
-
-          <button
-            onClick={() => navigate('/')}
-            className="p-2 rounded-xl bg-paper hover:bg-hairline text-ink-soft hover:text-ink transition-default border border-hairline cursor-pointer"
-            title="Logout"
-          >
-            <LogOut className="w-4 h-4" />
-          </button>
-        </div>
-      </header>
+      <DashboardHeader
+        role="intelligence"
+        syncStatus={syncStatus}
+        onLogout={() => navigate('/')}
+      />
 
       {/* Main Bloomberg-like Dashboard Content */}
       <main className="max-w-7xl w-full mx-auto p-6 md:p-8 flex-grow flex flex-col space-y-8">
@@ -354,20 +311,12 @@ const IntelligenceDashboard: React.FC = () => {
 
         {/* Bloomberg key metrics cards */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {[
-            { label: 'Total Trips Logged', val: stats.totalTrips.toLocaleString(), desc: '100% telemetry synced' },
-            { label: 'Active GPS Fleet', val: stats.activeVehicles.toLocaleString(), desc: 'Danfos, Kekes, Okadas' },
-            { label: 'Peak Route Corridor', val: stats.peakCorridor, desc: 'High demand index' },
-            { label: 'Avg Wait Queue', val: `${stats.avgWaitTime} mins`, desc: 'Lagos terminal average' },
-            { label: 'Weekly Growth', val: `+${stats.growthRate}%`, desc: 'Volume surge indicator' },
-            { label: 'Estimated Daily Yield', val: stats.dailyYield, desc: 'Cooperative fare gross' }
-          ].map((c, i) => (
-            <div key={i} className="bg-white border border-hairline rounded-2xl p-5 text-left flex flex-col justify-between card-hover">
-              <span className="text-[10px] font-bold text-ink-muted uppercase tracking-wider leading-tight">{c.label}</span>
-              <p className="text-[20px] font-extrabold text-primary tracking-tight mt-2.5 leading-tight">{c.val}</p>
-              <span className="text-[10px] text-ink-soft/70 font-semibold mt-2.5 border-t border-hairline pt-2">{c.desc}</span>
-            </div>
-          ))}
+          <MetricCard label="Total Trips Logged" value={stats.totalTrips.toLocaleString()} description="100% telemetry synced" />
+          <MetricCard label="Active GPS Fleet" value={stats.activeVehicles.toLocaleString()} description="Danfos, Kekes, Okadas" />
+          <MetricCard label="Peak Route Corridor" value={stats.peakCorridor} description="High demand index" />
+          <MetricCard label="Avg Wait Queue" value={`${stats.avgWaitTime} mins`} description="Lagos terminal average" />
+          <MetricCard label="Weekly Growth" value={`+${stats.growthRate}%`} description="Volume surge indicator" />
+          <MetricCard label="Estimated Daily Yield" value={stats.dailyYield} description="Cooperative fare gross" />
         </div>
 
         {/* Row 2: Map and Top Corridor Volumes */}
@@ -498,40 +447,11 @@ const IntelligenceDashboard: React.FC = () => {
 
             <div className="flex flex-col space-y-4">
               {insights.map((insight, i) => (
-                <div key={i} className="border border-hairline rounded-xl p-5 hover:border-primary transition-default flex flex-col space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className={`text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-pill border
-                        ${insight.category === 'planning' ? 'bg-primary-light text-primary border-primary-muted' : ''}
-                        ${insight.category === 'investment' ? 'bg-green-50 text-success border-green-200' : ''}
-                        ${insight.category === 'operational' ? 'bg-blue-50 text-info border-blue-200' : ''}
-                      `}>
-                        {insight.category} recommendation
-                      </span>
-                      <span className="text-[13px] font-extrabold text-ink">• {insight.corridor}</span>
-                    </div>
-
-                    <span className={`text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-pill border
-                      ${insight.urgency === 'high' ? 'bg-red-50 text-error border-red-200' : ''}
-                      ${insight.urgency === 'medium' ? 'bg-amber-50 text-warning border-amber-200' : ''}
-                      ${insight.urgency === 'low' ? 'bg-blue-50 text-info border-blue-200' : ''}
-                    `}>
-                      {insight.urgency} priority
-                    </span>
-                  </div>
-
-                  <p className="text-[13px] text-ink-soft leading-relaxed">
-                    {insight.recommendation}
-                  </p>
-
-                  <div className="pt-2 border-t border-hairline flex justify-between items-center text-[11px] text-ink-muted">
-                    <span>Target Outcome: <strong className="text-ink">{insight.impact}</strong></span>
-                    <span className="flex items-center gap-1 hover:text-primary cursor-pointer font-bold">
-                      Deploy policy recommendation
-                      <ChevronRight className="w-3.5 h-3.5" />
-                    </span>
-                  </div>
-                </div>
+                <AIInsightCard 
+                  key={i} 
+                  insight={insight} 
+                  onDeploy={(ins) => alert(`Deploying policy recommendation for ${ins.corridor}`)}
+                />
               ))}
             </div>
           </div>

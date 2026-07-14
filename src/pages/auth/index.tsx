@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, Eye, EyeOff, ArrowRight, CheckCircle } from 'lucide-react'
+import { authService } from '../../services/authService'
+import type { Role } from '../../services/authService'
 
 type Mode = 'login' | 'register'
-type Role = 'rider' | 'driver' | 'investor' | 'government'
 
 interface AuthPageProps {
   mode?: Mode
@@ -45,14 +46,17 @@ const AuthPage: React.FC<AuthPageProps> = ({ mode: initialMode = 'login' }) => {
     setError('')
     setLoading(true)
     try {
-      // TODO: connect to backend /api/v1/auth/register or /login
-      await new Promise((r) => setTimeout(r, 1200))
+      if (mode === 'login') {
+        await authService.login(form.email, role)
+      } else {
+        await authService.register(form.name, form.email, role, form.organisation)
+      }
       // Redirect based on role
       const dest = role === 'rider' ? '/dashboard/rider'
         : role === 'driver' ? '/dashboard/driver'
         : '/dashboard/intelligence'
       navigate(dest)
-    } catch {
+    } catch (err) {
       setError('Something went wrong. Please try again.')
     } finally {
       setLoading(false)
@@ -63,13 +67,12 @@ const AuthPage: React.FC<AuthPageProps> = ({ mode: initialMode = 'login' }) => {
     setError('')
     setGoogleLoading(true)
     try {
-      // TODO: integrate Google OAuth — fire google sign-in popup, get idToken, POST /api/v1/auth/google
-      await new Promise((r) => setTimeout(r, 1500))
+      await authService.loginWithGoogle(role)
       const dest = role === 'rider' ? '/dashboard/rider'
         : role === 'driver' ? '/dashboard/driver'
         : '/dashboard/intelligence'
       navigate(dest)
-    } catch {
+    } catch (err) {
       setError('Google sign-in failed. Please try again.')
     } finally {
       setGoogleLoading(false)
